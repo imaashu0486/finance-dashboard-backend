@@ -39,7 +39,7 @@ const options = {
           name: 'x-role',
           schema: {
             type: 'string',
-            enum: ['admin', 'analyst', 'viewer']
+            enum: ['admin', 'analyst', 'viewer', 'user']
           },
           required: false,
           description: 'Optional fallback role header. JWT role is primary.'
@@ -70,6 +70,16 @@ const options = {
             password: { type: 'string', minLength: 8 }
           }
         },
+        RegisterRequest: {
+          type: 'object',
+          required: ['name', 'email', 'password'],
+          properties: {
+            name: { type: 'string', minLength: 2, maxLength: 100 },
+            email: { type: 'string', format: 'email' },
+            password: { type: 'string', minLength: 8, maxLength: 128 },
+            role: { type: 'string', enum: ['admin', 'analyst', 'viewer', 'user'], default: 'user' }
+          }
+        },
         RefreshTokenRequest: {
           type: 'object',
           properties: {
@@ -83,7 +93,7 @@ const options = {
             name: { type: 'string' },
             email: { type: 'string', format: 'email' },
             password: { type: 'string', minLength: 8 },
-            role: { type: 'string', enum: ['admin', 'analyst', 'viewer'] },
+            role: { type: 'string', enum: ['admin', 'analyst', 'viewer', 'user'] },
             status: { type: 'string', enum: ['active', 'inactive'], default: 'active' }
           }
         },
@@ -93,7 +103,7 @@ const options = {
             name: { type: 'string' },
             email: { type: 'string', format: 'email' },
             password: { type: 'string', minLength: 8 },
-            role: { type: 'string', enum: ['admin', 'analyst', 'viewer'] },
+            role: { type: 'string', enum: ['admin', 'analyst', 'viewer', 'user'] },
             status: { type: 'string', enum: ['active', 'inactive'] }
           }
         },

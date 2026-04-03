@@ -4,6 +4,7 @@ const User = require('../models/User');
 const AuthSession = require('../models/AuthSession');
 const ApiError = require('../utils/ApiError');
 const { env } = require('../config/env');
+const { ROLES } = require('../constants/roles');
 
 const signAccessToken = (user) =>
   jwt.sign(
@@ -70,6 +71,35 @@ const issueTokenPair = async ({ user, userAgent = '', ipAddress = '' }) => {
     accessTokenExpiresIn: env.jwtExpiresIn,
     refreshTokenExpiresIn: env.refreshTokenExpiresIn
   };
+};
+
+const toPublicUserDto = (userDoc) => ({
+  id: userDoc._id,
+  name: userDoc.name,
+  email: userDoc.email,
+  role: userDoc.role,
+  status: userDoc.status,
+  createdAt: userDoc.createdAt,
+  updatedAt: userDoc.updatedAt
+});
+
+const register = async ({ name, email, password, role = ROLES.USER }) => {
+  const normalizedEmail = email.toLowerCase();
+  const existingUser = await User.findOne({ email: normalizedEmail });
+
+  if (existingUser) {
+    throw new ApiError(409, 'User email already exists');
+  }
+
+  const createdUser = await User.create({
+    name,
+    email: normalizedEmail,
+    password,
+    role,
+    status: 'active'
+  });
+
+  return toPublicUserDto(createdUser);
 };
 
 const login = async ({ email, password, userAgent, ipAddress }) => {
@@ -210,6 +240,7 @@ const getProfile = async (userId) => {
 };
 
 module.exports = {
+  register,
   login,
   rotateRefreshToken,
   logout,

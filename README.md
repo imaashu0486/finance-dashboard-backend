@@ -35,8 +35,24 @@ I used a service layer because it keeps controllers thin and makes logic easier 
 ## Assumptions
 
 1. There is no separate auth provider (Google/Auth0/etc.); login is local user/password.
-2. Roles are controlled in app data (`admin`, `analyst`, `viewer`).
+2. Roles are controlled in app data (`admin`, `analyst`, `viewer`, `user`).
 3. Financial records are soft-deleted, not physically removed.
+
+## Auto-seeded demo users (first run)
+
+On server startup, the app auto-creates these users if they do not already exist:
+
+- Admin
+  - email: `admin@demo.com`
+  - password: `Admin@123`
+- Analyst
+  - email: `analyst@demo.com`
+  - password: `Analyst@123`
+- Viewer
+  - email: `viewer@demo.com`
+  - password: `Viewer@123`
+
+This seeding is idempotent (safe to run repeatedly).
 
 ## Trade-offs I made
 
@@ -129,11 +145,32 @@ Use concrete endpoints like:
 - `GET /api/dashboard/summary`
 
 ### Auth
+- `POST /auth/register`
 - `POST /auth/login`
 - `POST /auth/refresh-token`
 - `POST /auth/logout`
 - `POST /auth/logout-all`
 - `GET /auth/me`
+
+### Register API
+
+Endpoint: `POST /api/auth/register`
+
+Request body:
+
+```json
+{
+  "name": "Test User",
+  "email": "test.user@example.com",
+  "password": "StrongPass123",
+  "role": "user"
+}
+```
+
+Notes:
+- `role` is optional; default is `user`.
+- Duplicate emails are rejected.
+- Password is hashed before storing.
 
 ### Users
 - `POST /users`

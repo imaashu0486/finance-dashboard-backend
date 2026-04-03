@@ -6,6 +6,11 @@ const { setAuthCookies, clearAuthCookies } = require('../utils/authCookies');
 
 const resolveRefreshToken = (req) => req.body.refreshToken || req.cookies?.[env.refreshCookieName];
 
+const register = asyncHandler(async (req, res) => {
+  const createdUser = await authService.register(req.body);
+  return respondOk(res, 201, 'User registered successfully', { user: createdUser });
+});
+
 const login = asyncHandler(async (req, res) => {
   const authPayload = await authService.login({
     ...req.body,
@@ -69,6 +74,7 @@ const getProfile = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+  register,
   login,
   refreshToken,
   logout,

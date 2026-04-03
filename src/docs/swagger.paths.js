@@ -25,6 +25,27 @@
 
 /**
  * @swagger
+ * /api/auth/register:
+ *   post:
+ *     tags: [Auth]
+ *     summary: "Register a new user"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegisterRequest'
+ *     responses:
+ *       201:
+ *         description: User registered
+ *       400:
+ *         description: Validation error
+ *       409:
+ *         description: User email already exists
+ */
+
+/**
+ * @swagger
  * /api/auth/login:
  *   post:
  *     tags: [Auth]
