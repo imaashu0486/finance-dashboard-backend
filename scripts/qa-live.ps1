@@ -1,3 +1,6 @@
+Write-Host "Deprecated: local live checks were consolidated. Use npm run test:qa (local) or npm run test:deployed (deployed)."
+exit 0
+
 $base='http://localhost:5000'
 $health = Invoke-RestMethod -Method Get -Uri "$base/health"
 

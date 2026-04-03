@@ -1,3 +1,7 @@
+Write-Host "Deprecated: use scripts/qa-evaluator-deployed.ps1 (or npm run test:deployed)."
+& "$PSScriptRoot\qa-evaluator-deployed.ps1"
+exit 0
+
 $base='https://finance-dashboard-backend-gg5d.onrender.com'
 $summary = [ordered]@{}
 

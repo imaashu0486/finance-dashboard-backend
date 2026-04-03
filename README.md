@@ -204,11 +204,8 @@ Live service:
 
 - Smoke test: `npm run test:smoke`
 - QA suite: `npm run test:qa`
-- Live endpoint checks:
-  - [scripts/qa-live.ps1](scripts/qa-live.ps1)
-  - [scripts/verify-deployed.ps1](scripts/verify-deployed.ps1)
-  - [scripts/verify-deployed-latest.ps1](scripts/verify-deployed-latest.ps1)
-  - [scripts/verify-deployed-extra.ps1](scripts/verify-deployed-extra.ps1)
+- Deployed evaluator check: `npm run test:deployed`
+  - [scripts/qa-evaluator-deployed.ps1](scripts/qa-evaluator-deployed.ps1)
 
 ## Reviewer quick check
 

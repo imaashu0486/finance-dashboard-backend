@@ -7,7 +7,8 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test:smoke": "node scripts/smoke-test.js",
-    "test:qa": "node scripts/qa-test.js"
+    "test:qa": "node scripts/qa-test.js",
+    "test:deployed": "powershell -ExecutionPolicy Bypass -File scripts/qa-evaluator-deployed.ps1"
   },
   "keywords": [
     "finance",
