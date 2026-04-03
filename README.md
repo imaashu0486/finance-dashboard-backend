@@ -8,7 +8,7 @@ I kept it straightforward to review, but production-minded in the areas that mat
 
 ## Quick Start (2 min)
 
-- Swagger (deployed): `https://finance-dashboard-backend-gg5d.onrender.com/api-docs`
+- Swagger (deployed): [https://finance-dashboard-backend-gg5d.onrender.com/api-docs](https://finance-dashboard-backend-gg5d.onrender.com/api-docs)
 - Admin demo login:
   - email: [admin@demo.com](mailto:admin@demo.com)
   - password: `Admin@123`
@@ -79,7 +79,7 @@ Role behavior:
 
 ## API overview
 
-Base URL (deployed): `https://finance-dashboard-backend-gg5d.onrender.com/api`
+Base URL (deployed): [https://finance-dashboard-backend-gg5d.onrender.com/api](https://finance-dashboard-backend-gg5d.onrender.com/api)
 
 Auth:
 - `POST /auth/register`
@@ -182,9 +182,9 @@ Optional:
 ## Deployment (Render)
 
 Live service:
-- API base: `https://finance-dashboard-backend-gg5d.onrender.com/api`
-- Swagger: `https://finance-dashboard-backend-gg5d.onrender.com/api-docs`
-- Health: `https://finance-dashboard-backend-gg5d.onrender.com/health`
+- API base: [https://finance-dashboard-backend-gg5d.onrender.com/api](https://finance-dashboard-backend-gg5d.onrender.com/api)
+- Swagger: [https://finance-dashboard-backend-gg5d.onrender.com/api-docs](https://finance-dashboard-backend-gg5d.onrender.com/api-docs)
+- Health: [https://finance-dashboard-backend-gg5d.onrender.com/health](https://finance-dashboard-backend-gg5d.onrender.com/health)
 
 `render.yaml` is included, so deploy via Render Blueprint.
 
