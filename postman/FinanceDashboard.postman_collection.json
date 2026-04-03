@@ -1,0 +1,477 @@
+{
+  "info": {
+    "name": "Finance Dashboard Backend QA",
+    "description": "Complete API collection for auth, users, financial records, and dashboard analytics.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "adminEmail", "value": "admin@qa.com" },
+    { "key": "adminPassword", "value": "SecurePass123" },
+    { "key": "analystEmail", "value": "analyst@qa.com" },
+    { "key": "analystPassword", "value": "SecurePass123" },
+    { "key": "viewerEmail", "value": "viewer@qa.com" },
+    { "key": "viewerPassword", "value": "SecurePass123" },
+    { "key": "adminAccessToken", "value": "" },
+    { "key": "adminRefreshToken", "value": "" },
+    { "key": "analystAccessToken", "value": "" },
+    { "key": "viewerAccessToken", "value": "" },
+    { "key": "createdUserId", "value": "" },
+    { "key": "recordId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /api/auth/login (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('adminAccessToken', json.data.accessToken);",
+                  "pm.collectionVariables.set('adminRefreshToken', json.data.refreshToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "POST /api/auth/login (analyst)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('analystAccessToken', json.data.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{analystEmail}}\",\n  \"password\": \"{{analystPassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "POST /api/auth/login (viewer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('viewerAccessToken', json.data.accessToken);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "viewer" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{viewerEmail}}\",\n  \"password\": \"{{viewerPassword}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "GET /api/auth/me",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "url": "{{baseUrl}}/api/auth/me"
+          }
+        },
+        {
+          "name": "POST /api/auth/refresh-token",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{adminRefreshToken}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/refresh-token"
+          }
+        },
+        {
+          "name": "POST /api/auth/logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{adminRefreshToken}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/logout"
+          }
+        },
+        {
+          "name": "POST /api/auth/logout-all",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": "{{baseUrl}}/api/auth/logout-all"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "POST /api/users (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('createdUserId', json.data.user.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"QA Analyst User\",\n  \"email\": \"qa.analyst.user@example.com\",\n  \"password\": \"SecurePass123\",\n  \"role\": \"analyst\",\n  \"status\": \"active\"\n}"
+            },
+            "url": "{{baseUrl}}/api/users"
+          }
+        },
+        {
+          "name": "GET /api/users (admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "url": "{{baseUrl}}/api/users"
+          }
+        },
+        {
+          "name": "PATCH /api/users/:id (admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"inactive\"\n}"
+            },
+            "url": "{{baseUrl}}/api/users/{{createdUserId}}"
+          }
+        },
+        {
+          "name": "POST /api/users (analyst forbidden)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Should Fail\",\n  \"email\": \"fail@example.com\",\n  \"password\": \"SecurePass123\",\n  \"role\": \"viewer\",\n  \"status\": \"active\"\n}"
+            },
+            "url": "{{baseUrl}}/api/users"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Financial Records",
+      "item": [
+        {
+          "name": "POST /api/financial-records (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('recordId', json.data.record._id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 5000,\n  \"type\": \"income\",\n  \"category\": \"Salary\",\n  \"date\": \"2026-04-01\",\n  \"notes\": \"Monthly salary\"\n}"
+            },
+            "url": "{{baseUrl}}/api/financial-records"
+          }
+        },
+        {
+          "name": "GET /api/financial-records (filter + pagination)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/financial-records?page=1&limit=10&type=income&category=Salary&startDate=2026-01-01&endDate=2026-12-31&search=salary",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "financial-records"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "type", "value": "income" },
+                { "key": "category", "value": "Salary" },
+                { "key": "startDate", "value": "2026-01-01" },
+                { "key": "endDate", "value": "2026-12-31" },
+                { "key": "search", "value": "salary" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "PATCH /api/financial-records/:id",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Updated note\"\n}"
+            },
+            "url": "{{baseUrl}}/api/financial-records/{{recordId}}"
+          }
+        },
+        {
+          "name": "DELETE /api/financial-records/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "url": "{{baseUrl}}/api/financial-records/{{recordId}}"
+          }
+        },
+        {
+          "name": "POST /api/financial-records invalid input",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "admin" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": -100,\n  \"type\": \"income\",\n  \"category\": \"Salary\",\n  \"date\": \"2026-04-01\",\n  \"notes\": \"invalid amount\"\n}"
+            },
+            "url": "{{baseUrl}}/api/financial-records"
+          }
+        },
+        {
+          "name": "POST /api/financial-records analyst forbidden",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 50,\n  \"type\": \"expense\",\n  \"category\": \"Food\",\n  \"date\": \"2026-04-02\",\n  \"notes\": \"forbidden create\"\n}"
+            },
+            "url": "{{baseUrl}}/api/financial-records"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "GET /api/dashboard/total-income",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "url": "{{baseUrl}}/api/dashboard/total-income"
+          }
+        },
+        {
+          "name": "GET /api/dashboard/total-expense",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "url": "{{baseUrl}}/api/dashboard/total-expense"
+          }
+        },
+        {
+          "name": "GET /api/dashboard/net-balance",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "url": "{{baseUrl}}/api/dashboard/net-balance"
+          }
+        },
+        {
+          "name": "GET /api/dashboard/category-wise",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "url": "{{baseUrl}}/api/dashboard/category-wise"
+          }
+        },
+        {
+          "name": "GET /api/dashboard/monthly-trends",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "url": "{{baseUrl}}/api/dashboard/monthly-trends"
+          }
+        },
+        {
+          "name": "GET /api/dashboard/last-transactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "url": "{{baseUrl}}/api/dashboard/last-transactions?limit=5"
+          }
+        },
+        {
+          "name": "GET /api/dashboard/top-expense-categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "url": "{{baseUrl}}/api/dashboard/top-expense-categories?limit=3"
+          }
+        },
+        {
+          "name": "GET /api/dashboard/summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{analystAccessToken}}" },
+              { "key": "x-role", "value": "analyst" }
+            ],
+            "url": "{{baseUrl}}/api/dashboard/summary?startDate=2026-01-01&endDate=2026-12-31"
+          }
+        },
+        {
+          "name": "GET /api/dashboard/summary viewer forbidden",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{viewerAccessToken}}" },
+              { "key": "x-role", "value": "viewer" }
+            ],
+            "url": "{{baseUrl}}/api/dashboard/summary"
+          }
+        }
+      ]
+    }
+  ]
+}
