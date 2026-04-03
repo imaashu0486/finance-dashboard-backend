@@ -79,9 +79,14 @@ Permission map:
 {
   admin: ['create', 'read', 'update', 'delete', 'summary'],
   analyst: ['read', 'summary'],
-  viewer: ['read']
+  viewer: ['summary']
 }
 ```
+
+Role behavior summary:
+- `viewer`: dashboard-only access (summary endpoints), no record/user modifications.
+- `analyst`: read financial records + access dashboard insights.
+- `admin`: full management access.
 
 ## Swagger docs
 
