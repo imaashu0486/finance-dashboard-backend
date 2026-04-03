@@ -2,7 +2,19 @@ const path = require('path');
 const swaggerJsdoc = require('swagger-jsdoc');
 const { env } = require('./env');
 
-const serverUrl = env.swaggerServerUrl || `http://localhost:${env.port}`;
+// Use same-origin by default so Swagger keeps working even if deployment URL changes.
+const servers = [
+  {
+    url: '/'
+  }
+];
+
+if (env.swaggerServerUrl) {
+  servers.push({
+    url: env.swaggerServerUrl,
+    description: env.nodeEnv === 'production' ? 'Configured production URL' : 'Configured local URL'
+  });
+}
 
 const options = {
   definition: {
@@ -12,12 +24,7 @@ const options = {
       version: '1.0.0',
       description: 'Production-grade Finance Dashboard backend API documentation'
     },
-    servers: [
-      {
-        url: serverUrl,
-        description: env.nodeEnv === 'production' ? 'Production server' : 'Local server'
-      }
-    ],
+    servers,
     components: {
       securitySchemes: {
         bearerAuth: {
