@@ -71,6 +71,8 @@ Permission map:
 
 - Swagger UI is available at:
   - `http://localhost:5000/api-docs`
+- Deployed Swagger URL:
+  - `https://finance-dashboard-backend-gg5d.onrender.com/api-docs`
 - OpenAPI spec is generated from JSDoc comments in [src/docs/swagger.paths.js](src/docs/swagger.paths.js).
 
 ## Setup
@@ -117,6 +119,8 @@ Useful optional values:
 ## Main endpoints
 
 Base: `http://localhost:5000/api`
+
+Production Base: `https://finance-dashboard-backend-gg5d.onrender.com/api`
 
 ### Auth
 - `POST /auth/login`
@@ -167,8 +171,11 @@ I added a Render Blueprint file at [render.yaml](render.yaml), so deployment is 
   - `SWAGGER_SERVER_URL` (set to your Render service URL, e.g. `https://<app>.onrender.com`)
 
 After deploy:
-- Health: `https://<app>.onrender.com/health`
-- Swagger: `https://<app>.onrender.com/api-docs`
+- Health: `https://finance-dashboard-backend-gg5d.onrender.com/health`
+- Swagger: `https://finance-dashboard-backend-gg5d.onrender.com/api-docs`
+- API Base: `https://finance-dashboard-backend-gg5d.onrender.com/api`
+
+Note: `GET /` returns 404 by design since the app exposes `/health`, `/api`, and `/api-docs` only.
 
 ## Submission cleanup notes
 
