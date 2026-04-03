@@ -152,6 +152,24 @@ Base: `http://localhost:5000/api`
 - QA suite: `npm run test:qa`
 - Live endpoint check script: [scripts/qa-live.ps1](scripts/qa-live.ps1)
 
+## Deploy on Render
+
+I added a Render Blueprint file at [render.yaml](render.yaml), so deployment is straightforward.
+
+1. Push this repo to GitHub (already done).
+2. In Render, click **New +** → **Blueprint**.
+3. Connect this repository.
+4. Render will read [render.yaml](render.yaml) and create the web service.
+5. Set these required secrets in Render environment settings:
+  - `MONGODB_URI` (use MongoDB Atlas or another hosted Mongo instance)
+  - `JWT_SECRET`
+  - `REFRESH_TOKEN_SECRET`
+  - `SWAGGER_SERVER_URL` (set to your Render service URL, e.g. `https://<app>.onrender.com`)
+
+After deploy:
+- Health: `https://<app>.onrender.com/health`
+- Swagger: `https://<app>.onrender.com/api-docs`
+
 ## Submission cleanup notes
 
 - Added [\.gitignore](.gitignore) with `.env` ignored.
