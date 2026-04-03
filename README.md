@@ -122,6 +122,12 @@ Base: `http://localhost:5000/api`
 
 Production Base: `https://finance-dashboard-backend-gg5d.onrender.com/api`
 
+Important: `/api` is a prefix (base path), not a standalone endpoint. So `GET /api` returning 404 is expected.
+Use concrete endpoints like:
+- `POST /api/auth/login`
+- `GET /api/financial-records`
+- `GET /api/dashboard/summary`
+
 ### Auth
 - `POST /auth/login`
 - `POST /auth/refresh-token`
